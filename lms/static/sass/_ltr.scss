@@ -1,5 +1,5 @@
 // ------------------------------
-// Studio right-to-left support
+// LMS left-to-right support
 
 // About: Sass partial for defining settings and utilities for LTR-centric layouts.
 
@@ -10,15 +10,15 @@
 // ----------------------------
 // #SETTINGS
 // ----------------------------
-$layout-direction: rtl;
+$layout-direction: ltr;
 
 // currently needed since platform Sass won't obey
 // https://github.com/edx/ux-pattern-library/blob/master/pattern-library/sass/patterns/_grid.scss#L23
-$grid-direction-default: rtl;
+$grid-direction-default: ltr;
 $grid-direction-reversed: ltr;
 
 
 // ----------------------------
 // #LIB
 // ----------------------------
-@import '../../../node_modules/edx-pattern-library/node_modules/bi-app-sass/bi-app/bi-app-rtl';
+@import '../../../node_modules/edx-pattern-library/node_modules/bi-app-sass/bi-app/bi-app-ltr';

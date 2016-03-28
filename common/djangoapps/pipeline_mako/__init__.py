@@ -33,7 +33,7 @@ def pipeline_css_info(package_name):
     single CSS file.
 
     Args:
-        package_name: The name of the CSS package to be
+        package_name: The name of the CSS package.
 
     Returns:
         A dictionary with information about the CSS package.
