@@ -1,10 +1,9 @@
 """Tests covering Programs utilities."""
 import unittest
-from urlparse import urljoin
 
 from django.conf import settings
 from django.core.cache import cache
-from django.test import TestCase, override_settings
+from django.test import TestCase
 import httpretty
 import mock
 from nose.plugins.attrib import attr
@@ -15,9 +14,12 @@ from openedx.core.djangoapps.credentials.tests.mixins import CredentialsApiConfi
 from openedx.core.djangoapps.programs.models import ProgramsApiConfig
 from openedx.core.djangoapps.programs.tests.mixins import ProgramsApiConfigMixin, ProgramsDataMixin
 from openedx.core.djangoapps.programs.utils import (
-    get_programs, get_programs_for_credentials, get_programs_for_dashboard, get_user_enrolled_programs
+    get_programs,
+    get_programs_for_dashboard,
+    get_programs_for_credentials,
+    get_engaged_programs,
 )
-from student.tests.factories import UserFactory
+from student.tests.factories import UserFactory, CourseEnrollmentFactory
 
 
 @unittest.skipUnless(settings.ROOT_URLCONF == 'lms.urls', 'Test only valid in lms')
@@ -187,31 +189,57 @@ class TestProgramRetrieval(ProgramsApiConfigMixin, ProgramsDataMixin,
         actual = get_programs_for_credentials(self.user, credential_data)
         self.assertEqual(actual, [])
 
+    def _create_enrollments(self, *course_ids):
+        return [CourseEnrollmentFactory(user=self.user, course_id=c) for c in course_ids]
+
     @httpretty.activate
-    @override_settings(MKTG_URLS={'ROOT': 'www.edx.org'})
-    def test_get_user_enrolled_programs(self):
+    def test_get_engaged_programs(self):
+        """Verify that programs are returned in the correct order when the user has multiple enrollments."""
         self.create_programs_config()
         self.mock_programs_api()
 
-        actual = get_user_enrolled_programs(self.user, self.COURSE_KEYS)
-        for program in self.PROGRAMS_API_RESPONSE['results']:
-            program['marketing_url'] = urljoin(
-                settings.MKTG_URLS.get('ROOT'),
-                'xseries' + '/{}'
-            ).format(program['marketing_slug'])
+        enrollments = self._create_enrollments(*self.COURSE_KEYS)
+        actual = get_engaged_programs(self.user, enrollments)
 
-            self.assertIn(program, actual)
+        programs = self.PROGRAMS_API_RESPONSE['results']
+        # The most recently created enrollment corresponds to the last test program.
+        expected = programs[::-1]
 
-    @httpretty.activate
-    def test_get_user_enrolled_programs_no_data(self):
-        self.create_programs_config()
-        self.mock_programs_api(data={'results': []})
-        actual = get_user_enrolled_programs(self.user, self.COURSE_KEYS)
-        self.assertEqual([], actual)
+        self.assertEqual(expected, actual)
 
     @httpretty.activate
-    def test_get_user_enrolled_programs_no_course_keys(self):
+    def test_get_engaged_programs_enrolled_subset(self):
+        """Verify that programs are returned when the user has a single enrollment."""
         self.create_programs_config()
         self.mock_programs_api()
-        actual = get_user_enrolled_programs(self.user, [])
-        self.assertEqual([], actual)
+
+        enrollments = self._create_enrollments(self.COURSE_KEYS[-1])
+        actual = get_engaged_programs(self.user, enrollments)
+
+        programs = self.PROGRAMS_API_RESPONSE['results']
+        expected = [programs[-1]]
+
+        self.assertEqual(expected, actual)
+
+    @httpretty.activate
+    def test_get_engaged_no_enrollments(self):
+        """Verify that no programs are returned when the user has no enrollments."""
+        self.create_programs_config()
+        self.mock_programs_api()
+
+        actual = get_engaged_programs(self.user, [])
+        expected = []
+
+        self.assertEqual(expected, actual)
+
+    @httpretty.activate
+    def test_get_engaged_no_programs(self):
+        """Verify that no programs are returned when no programs exist."""
+        self.create_programs_config()
+        self.mock_programs_api(data=[])
+
+        enrollments = self._create_enrollments(*self.COURSE_KEYS)
+        actual = get_engaged_programs(self.user, enrollments)
+        expected = []
+
+        self.assertEqual(expected, actual)
