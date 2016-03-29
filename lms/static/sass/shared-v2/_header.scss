@@ -44,12 +44,19 @@ header.global {
       display: block;
     }
   }
+<<<<<<< 3f7ca77e9c42b510d11c9cb2bd874f2a927b1f2e
 
+=======
+>>>>>>> FEDX-118 Adding header to test page
   nav {
     @include clearfix();
     height: 40px;
     margin: 0 auto;
+<<<<<<< 3f7ca77e9c42b510d11c9cb2bd874f2a927b1f2e
     padding: 18px ($baseline/2) + px 0;
+=======
+    padding: 18px ($baseline/2) 0;
+>>>>>>> FEDX-118 Adding header to test page
     max-width: span(12);
   }
 
@@ -77,8 +84,12 @@ header.global {
     }
   }
 
+<<<<<<< 3f7ca77e9c42b510d11c9cb2bd874f2a927b1f2e
 
   // Where is this used?
+=======
+/*
+>>>>>>> FEDX-118 Adding header to test page
   li.secondary {
     > a {
       color: $link-color;
@@ -94,15 +105,23 @@ header.global {
         margin-right: 0;
       }
 
+<<<<<<< 3f7ca77e9c42b510d11c9cb2bd874f2a927b1f2e
       &:hover,
       &:focus {
+=======
+      &:hover, &:focus {
+>>>>>>> FEDX-118 Adding header to test page
         color: $base-font-color;
       }
     }
   }
 
+<<<<<<< 3f7ca77e9c42b510d11c9cb2bd874f2a927b1f2e
   // Where is this used? User menu
   /*.primary {
+=======
+  .primary {
+>>>>>>> FEDX-118 Adding header to test page
     margin-right: ($baseline/4);
 
     > a {
@@ -130,8 +149,13 @@ header.global {
         background: $button-bg-hover-color;
       }
     }
+<<<<<<< 3f7ca77e9c42b510d11c9cb2bd874f2a927b1f2e
   }*/
 /*
+=======
+  }
+
+>>>>>>> FEDX-118 Adding header to test page
   .user {
     @include float(right);
     @extend %ui-print-excluded;
