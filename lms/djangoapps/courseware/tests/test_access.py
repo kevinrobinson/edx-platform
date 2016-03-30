@@ -326,6 +326,41 @@ class AccessTestCase(LoginEnrollmentTestCase, ModuleStoreTestCase, MilestonesTes
             self.student, 'not_staff_or_instructor', self.course.id
         ))
 
+    @patch('courseware.access.in_preview_mode', Mock(return_value=True))
+    def test_has_access_to_course_preview_when_masquerade(self):
+        """
+        Tests particular user's can access course in preview mode when masquerade.
+        """
+        self.assertTrue(access._has_access_to_course(
+            self.global_staff, 'staff', self.course.id
+        ))
+        self.assertTrue(access._has_access_to_course(
+            self.global_staff, 'instructor', self.course.id
+        ))
+        self.assertTrue(access._has_access_to_course(
+            self.course_staff, 'staff', self.course.id
+        ))
+        self.assertFalse(access._has_access_to_course(
+            self.course_staff, 'instructor', self.course.id
+        ))
+        self.assertTrue(access._has_access_to_course(
+            self.course_instructor, 'staff', self.course.id
+        ))
+        self.assertTrue(access._has_access_to_course(
+            self.course_instructor, 'instructor', self.course.id
+        ))
+        # student does not have staff/instructor access
+        self.assertFalse(access._has_access_to_course(
+            self.student, 'staff', self.course.id
+        ))
+        self.assertFalse(access._has_access_to_course(
+            self.student, 'instructor', self.course.id
+        ))
+
+        self.assertFalse(access._has_access_to_course(
+            self.student, 'not_staff_or_instructor', self.course.id
+        ))
+
     def test__has_access_string(self):
         user = Mock(is_staff=True)
         self.assertFalse(access._has_access_string(user, 'staff', 'not_global'))
