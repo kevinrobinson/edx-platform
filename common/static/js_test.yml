@@ -43,9 +43,9 @@ lib_paths:
     - js/test/add_ajax_prefix.js
     - js/test/i18n.js
     - coffee/src/jquery.immediateDescendents.js
-    - js/vendor/afontgarde/modernizr.fontface-generatedcontent.js
-    - js/vendor/afontgarde/afontgarde.js
-    - js/vendor/afontgarde/edx-icons.js
+    - edx-pattern-library/js/modernizr-custom.js
+    - edx-pattern-library/js/afontgarde.js
+    - edx-pattern-library/js/edx-icons.js
 
 # Paths to source JavaScript files
 src_paths:

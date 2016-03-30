@@ -29,7 +29,6 @@
         defineDependency("Logger", "logger");
         defineDependency("URI", "URI");
         defineDependency("Backbone", "backbone");
-        defineDependency("Modernizr", "modernizr");
 
         // utility.js adds two functions to the window object, but does not return anything
         defineDependency("isExternal", "utility", true);
@@ -60,9 +59,9 @@
             "URI": "js/vendor/URI.min",
             "string_utils": "js/src/string_utils",
             "utility": "js/src/utility",
-            "modernizr": "js/vendor/afontgarde/modernizr.fontface-generatedcontent",
-            "afontgarde": "js/vendor/afontgarde/afontgarde",
-            "edxicons": "js/vendor/afontgarde/edx-icons",
+            "modernizr": "edx-pattern-library/js/modernizr-custom",
+            "afontgarde": "edx-pattern-library/js/afontgarde",
+            "edxicons": "edx-pattern-library/js/edx-icons",
             "draggabilly": "js/vendor/draggabilly",
 
             // Files needed by OVA
@@ -208,11 +207,10 @@
                 exports: "Modernizr"
             },
             "afontgarde": {
-                deps: ["jquery", "modernizr"],
                 exports: "AFontGarde"
             },
             "edxicons": {
-                deps: ["jquery", "modernizr", "afontgarde"],
+                deps: ["afontgarde"],
                 exports: "edxicons"
             },
             "draggabilly": {

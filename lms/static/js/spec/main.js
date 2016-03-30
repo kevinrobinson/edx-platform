@@ -66,9 +66,9 @@
             'mathjax_delay_renderer': 'coffee/src/mathjax_delay_renderer',
             'MathJaxProcessor': 'coffee/src/customwmd',
             'draggabilly': 'xmodule_js/common_static/js/vendor/draggabilly',
-            'modernizr': 'xmodule_js/common_static/js/vendor/afontgarde/modernizr.fontface-generatedcontent',
-            'afontgarde': 'xmodule_js/common_static/js/vendor/afontgarde/afontgarde',
-            'edxicons': 'xmodule_js/common_static/js/vendor/afontgarde/edx-icons',
+            'modernizr': 'xmodule_js/common_static/edx-pattern-library/js/modernizr-custom',
+            'afontgarde': 'xmodule_js/common_static/edx-pattern-library/js/afontgarde',
+            'edxicons': 'xmodule_js/common_static/edx-pattern-library/js/edx-icons',
 
             // Manually specify LMS files that are not converted to RequireJS
             'history': 'js/vendor/history',
@@ -632,11 +632,10 @@
                 exports: 'Modernizr'
             },
             'afontgarde': {
-                deps: ['jquery','modernizr'],
                 exports: 'AFontGarde'
             },
             'edxicons': {
-                deps: ['jquery','modernizr','afontgarde'],
+                deps: ["afontgarde"],
                 exports: 'edxicons'
             }
         }

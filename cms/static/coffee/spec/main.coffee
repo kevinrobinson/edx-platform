@@ -50,9 +50,9 @@ requirejs.config({
         "domReady": "xmodule_js/common_static/js/vendor/domReady",
         "URI": "xmodule_js/common_static/js/vendor/URI.min",
         "mock-ajax": "xmodule_js/common_static/js/vendor/mock-ajax",
-        "modernizr": "xmodule_js/common_static/js/vendor/afontgarde/modernizr.fontface-generatedcontent",
-        "afontgarde": "xmodule_js/common_static/js/vendor/afontgarde/afontgarde",
-        "edxicons": "xmodule_js/common_static/js/vendor/afontgarde/edx-icons",
+        "modernizr": "xmodule_js/common_static/edx-pattern-library/js/modernizr-custom",
+        "afontgarde": "xmodule_js/common_static/edx-pattern-library/js/afontgarde",
+        "edxicons": "xmodule_js/common_static/edx-pattern-library/js/edx-icons",
 
         "mathjax": "//cdn.mathjax.org/mathjax/2.6-latest/MathJax.js?config=TeX-MML-AM_SVG&delayStartupUntil=configured",
         "youtube": "//www.youtube.com/player_api?noext",
@@ -214,11 +214,10 @@ requirejs.config({
             exports: "Modernizr"
         },
         "afontgarde": {
-            deps: ["jquery", "modernizr"],
             exports: "AFontGarde"
         },
         "edxicons": {
-            deps: ["jquery", "modernizr", "afontgarde"],
+            deps: ["afontgarde"],
             exports: "edxicons"
         },
         "draggabilly": {

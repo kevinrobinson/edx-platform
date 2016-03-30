@@ -534,7 +534,7 @@ from openedx.core.lib.rooted_paths import rooted_glob
 PIPELINE_CSS = {
     'style-vendor': {
         'source_filenames': [
-            'js/vendor/afontgarde/afontgarde.css',
+            'edx-pattern-library/js/afontgarde.css',
             'css/vendor/normalize.css',
             'css/vendor/font-awesome.css',
             'css/vendor/html5-input-polyfills/number-polyfill.css',
