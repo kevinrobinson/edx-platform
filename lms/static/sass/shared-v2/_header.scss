@@ -9,7 +9,8 @@ $header-bg: orange;
 $courseware-hover-color: red;
 $courseware-border-bottom-color: red;
 $link-color: red;
-
+$base-font-color: red;
+$sans-serif: 'Open Sans','Helvetica Neue', Helvetica, Arial, sans-serif;
 
 // edX theme: Global Header
 // ====================
@@ -43,11 +44,12 @@ header.global {
       display: block;
     }
   }
+
   nav {
     @include clearfix();
     height: 40px;
     margin: 0 auto;
-    padding: 18px ($baseline/2) 0;
+    padding: 18px ($baseline/2) + px 0;
     max-width: span(12);
   }
 
@@ -75,7 +77,8 @@ header.global {
     }
   }
 
-/*
+
+  // Where is this used?
   li.secondary {
     > a {
       color: $link-color;
@@ -91,13 +94,15 @@ header.global {
         margin-right: 0;
       }
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         color: $base-font-color;
       }
     }
   }
 
-  .primary {
+  // Where is this used? User menu
+  /*.primary {
     margin-right: ($baseline/4);
 
     > a {
@@ -125,8 +130,8 @@ header.global {
         background: $button-bg-hover-color;
       }
     }
-  }
-
+  }*/
+/*
   .user {
     @include float(right);
     @extend %ui-print-excluded;
