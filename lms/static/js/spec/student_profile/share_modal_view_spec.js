@@ -41,7 +41,7 @@ define(['backbone', 'jquery', 'underscore', 'moment',
                 spyOn(view, "close");
                 view.delegateEvents();
                 expect(view.close).not.toHaveBeenCalled();
-                $(view.$el).simulate("keydown", { keyCode: keys.ESCAPE});
+                $(view.$el).simulate("keydown", {keyCode: keys.ESCAPE});
                 expect(view.close).toHaveBeenCalled();
             });
 
