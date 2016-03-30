@@ -45,6 +45,14 @@ class Badge(PageObject):
         """
         self.q(css=".share-button").click()
         EmptyPromise(self.modal_displayed, "Share modal displayed").fulfill()
+        EmptyPromise(self.modal_focused, "Focus handed to modal").fulfill()
+
+    def modal_focused(self):
+        return BrowserQuery(self.full_view, css=".badges-modal").is_focused()
+
+    def close_modal(self):
+        BrowserQuery(self.full_view, css=".badges-modal .close").click()
+        EmptyPromise(lambda: not self.modal_displayed(), "Share modal dismissed").fulfill()
 
 
 class LearnerProfilePage(FieldsMixin, PageObject):

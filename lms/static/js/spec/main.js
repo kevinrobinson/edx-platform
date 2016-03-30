@@ -665,7 +665,7 @@
         'lms/include/js/spec/student_profile/learner_profile_view_spec.js',
         'lms/include/js/spec/student_profile/learner_profile_fields_spec.js',
         'lms/include/js/spec/student_profile/learner_profile_share_modal_view_spec.js',
-        'lms/include/js/spec/student_profile/learner_profile_badge_view.js',
+        'lms/include/js/spec/student_profile/learner_profile_badge_view_spec.js',
         'lms/include/js/spec/student_profile/learner_profile_section_two_spec.js',
         'lms/include/js/spec/student_profile/learner_profile_badge_list_spec.js',
         'lms/include/js/spec/student_profile/learner_profile_badge_list_container_spec.js',

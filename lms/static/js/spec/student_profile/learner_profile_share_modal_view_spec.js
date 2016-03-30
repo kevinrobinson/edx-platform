@@ -55,8 +55,6 @@ define(['backbone', 'jquery', 'underscore', 'moment',
                 expect(view.close).toHaveBeenCalled();
             });
 
-            // TODO: Test for focus behaviour
-
         });
     }
 );
