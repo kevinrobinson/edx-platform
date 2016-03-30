@@ -1094,7 +1094,6 @@ MIDDLEWARE_CLASSES = (
     'request_cache.middleware.RequestCache',
     'mobile_api.middleware.AppVersionUpgrade',
     'header_control.middleware.HeaderControlMiddleware',
-    'clean_headers.middleware.CleanHeadersMiddleware',
     'microsite_configuration.middleware.MicrositeMiddleware',
     'django_comment_client.middleware.AjaxExceptionMiddleware',
     'django.middleware.common.CommonMiddleware',

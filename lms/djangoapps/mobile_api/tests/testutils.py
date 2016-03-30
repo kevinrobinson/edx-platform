@@ -11,8 +11,8 @@ Test utilities for mobile API tests:
 """
 # pylint: disable=no-member
 from datetime import timedelta
-from django.utils import timezone
 
+from django.utils import timezone
 import ddt
 from mock import patch
 from django.core.urlresolvers import reverse
@@ -29,7 +29,7 @@ from courseware.access_response import (
 from courseware.tests.factories import UserFactory
 from student import auth
 from student.models import CourseEnrollment
-from mobile_api.test_milestones import MobileAPIMilestonesMixin
+from mobile_api.tests.test_milestones import MobileAPIMilestonesMixin
 
 
 class MobileAPITestCase(ModuleStoreTestCase, APITestCase):

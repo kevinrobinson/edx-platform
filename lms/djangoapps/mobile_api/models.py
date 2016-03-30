@@ -1,8 +1,10 @@
 """
 ConfigurationModel for the mobile_api djangoapp.
 """
-from django.db.models.fields import TextField, DateTimeField, CharField, BooleanField, IntegerField
-from config_models.models import ConfigurationModel, cache
+from django.db.models.fields import TextField, DateTimeField, CharField, IntegerField
+from lms.djangoapps.mobile_api import utils
+from config_models.models import ConfigurationModel
+from mobile_api.mobile_platform import PLATFORM_CLASSES
 
 
 class MobileApiConfig(ConfigurationModel):
@@ -25,49 +27,51 @@ class MobileApiConfig(ConfigurationModel):
         return [profile.strip() for profile in cls.current().video_profiles.split(",") if profile]
 
 
-class AppVersionConfig(ConfigurationModel):  # pylint: disable=model-missing-unicode
+class AppVersionConfig(ConfigurationModel):
     """
     Configuration for mobile app versions available.
     """
-    IOS = "ios"
-    ANDROID = "android"
-    PLATFORM = (
-        (IOS, "iOS"),
-        (ANDROID, "Android"),
-    )
+    PLATFORM_CHOICES = tuple([
+        (platform, platform)
+        for platform in PLATFORM_CLASSES.keys()
+    ])
     KEY_FIELDS = ('platform', 'version')  # combination of mobile platform and version is unique
-    platform = CharField(max_length=50, choices=PLATFORM, blank=False)
-    version = CharField(max_length=50, blank=False)
+    platform = CharField(max_length=50, choices=PLATFORM_CHOICES, blank=False)
+    version = CharField(
+        max_length=50,
+        blank=False,
+        help_text="Version should be in the format X.X.X.Y where X is a number and Y is alphanumeric"
+    )
     major_version = IntegerField()
     minor_version = IntegerField()
     patch_version = IntegerField()
-    expire_at = DateTimeField(null=True, blank=True, verbose_name="Last Supported Date")
+    expire_at = DateTimeField(null=True, blank=True, verbose_name="Expiry date for platform version")
 
     class Meta:
-        ordering = ['major_version', 'minor_version', 'patch_version']
+        ordering = ['-major_version', '-minor_version', '-patch_version']
+
+    def __unicode__(self):
+        return "{}_{}".format(self.platform, self.version)
 
     @classmethod
     def latest_version(cls, platform):
         """ returns latest supported version for a platform """
-        active_configs = cls.objects.current_set().filter(platform=platform, enabled=True).reverse()
-        if active_configs:
-            latest_version = active_configs[0].version
-            return latest_version
+        latest_version_config = cls.objects.current_set().filter(platform=platform, enabled=True).first()
+        if latest_version_config:
+            return latest_version_config.version
 
     @classmethod
     def last_supported_date(cls, platform, version):
         """ returns date when version will get expired for a platform """
-        active_configs = cls.objects.current_set().filter(platform=platform, enabled=True)
+        parsed_version = utils.parsed_version(version)
+        active_configs = cls.objects.current_set().filter(platform=platform, enabled=True, expire_at__isnull=False).reverse()
         for config in active_configs:
-            if config.version >= version and config.expire_at:
+            if utils.parsed_version(config.version) >= parsed_version:
                 return config.expire_at
 
     def save(self, *args, **kwargs):
         """
         parses version into major, minor and patch versions before saving
         """
-        parsed_version = tuple(map(int, (self.version.split(".")[:3])))
-        self.major_version = parsed_version[0]
-        self.minor_version = parsed_version[1]
-        self.patch_version = parsed_version[2]
+        self.major_version, self.minor_version, self.patch_version = utils.parsed_version(self.version)
         super(AppVersionConfig, self).save(*args, **kwargs)
