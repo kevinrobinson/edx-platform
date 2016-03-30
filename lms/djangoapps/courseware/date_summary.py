@@ -213,6 +213,47 @@ class VerifiedUpgradeDeadlineDate(DateSummary):
             return ecommerce_service.checkout_page_url(course_mode.sku)
         return reverse('verify_student_upgrade_and_verify', args=(self.course.id,))
 
+    @property
+    def is_enabled(self):
+        """
+        Whether or not this summary block should be shown.
+
+        By default, the summary is only shown if its date is in the
+        future.
+        """
+        def _check_user_has_paid():
+            """Check whether the user has an active enrollment and has paid.
+
+            If a user is enrolled in a paid course mode, we assume
+            that the user has paid.
+
+            Arguments:
+                user (User): The user to check.
+                course_key (CourseKey): The key of the course to check.
+
+            Returns:
+                Tuple `(has_paid, is_active)` indicating whether the user
+                has paid and whether the user has an active account.
+
+            """
+            all_course_modes = CourseMode.modes_for_course_dict(self.course.id, include_expired=True)
+            enrollment_mode, is_active = CourseEnrollment.enrollment_mode_for_user(self.user, self.course.id)
+            has_paid = False
+
+            if enrollment_mode is not None and is_active:
+                course_mode = all_course_modes.get(enrollment_mode)
+                has_paid = (course_mode and course_mode.min_price > 0)
+
+            return has_paid
+
+        if self.date is None:
+            return False
+
+        is_enabled = super(VerifiedUpgradeDeadlineDate, self).is_enabled
+        already_paid = _check_user_has_paid()
+
+        return is_enabled and not already_paid
+
     @lazy
     def date(self):
         try:
