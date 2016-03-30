@@ -13,6 +13,9 @@
     <%static:require_module module_name="js/student_account/logistration_factory" class_name="LogistrationFactory">
         var options = ${data | n, dump_js_escaped_json};
         LogistrationFactory(options);
+        if ('newrelic' in window) {
+            newrelic.finished();
+        }
     </%static:require_module>
 </%block>
 
