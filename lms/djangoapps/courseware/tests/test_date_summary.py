@@ -178,7 +178,7 @@ class CourseDateSummaryTest(SharedModuleStoreTestCase):
         block = CourseEndDate(self.course, self.user)
         self.assertEqual(
             block.description,
-            'To earn a certificate, you must complete all requirements before this date.'
+            'After this date you may still view course content even though it is archived.'
         )
 
     def test_course_end_date_after_course(self):

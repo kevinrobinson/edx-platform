@@ -182,7 +182,7 @@ class CourseEndDate(DateSummary):
     @property
     def description(self):
         if datetime.now(pytz.UTC) <= self.date:
-            return _('To earn a certificate, you must complete all requirements before this date.')
+            return _('After this date you may still view course content even though it is archived.')
         return _('This course is archived, which means you can review course content but it is no longer active.')
 
     @property
